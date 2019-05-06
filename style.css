@@ -1,0 +1,36 @@
+body {
+    overflow: hidden;
+}
+
+#spaceship {
+    width: 150px;
+    height: 150px;
+    background-image: url('Images/Spaceship-PNG-File.png');
+    background-size: contain;
+    transform: rotate(90deg);
+    z-index: 99;
+}
+
+#spaceship:after {
+    content: '';
+    height: 50px;
+    width: 50px;
+    background-image: url(Images/smoke.gif);
+    display: block;
+    background-size: cover;
+    position: absolute;
+    right: 46px;
+    bottom: -40px;
+    transform: rotate(90deg);
+}
+
+#bullet {
+    width: 60px;
+    z-index: 9;
+}
+
+#bar {
+    width: 10px;
+    height: 70px;
+    background-color: #000;
+}
