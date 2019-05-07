@@ -124,19 +124,26 @@ $(document).ready(function(){
 
     //Check Aim of the bullet
     const checkAim = () => {
-        setInterval(function(){
+        let checkAimInt = setInterval(function(){
             bulletPosTop = bullet.css("top").replace("px","");
             bulletPosLeft = bullet.css("left").replace("px","");
             barPos = bar.position().top;
             barPosBottom = bar.position().top + 70;
             barPosLeft = bar.position().left - 20;
-            if((bulletPosTop >= barPos) && (bulletPosTop<=barPosBottom)) {
-                if (!prevValues || prevValues.t != bulletPosTop || prevValues.b != barPosBottom) {
-                    console.log("Hit");
-                }
-                prevValues = { t: bulletPosTop, b: barPosBottom };
+            if((bulletPosTop >= barPos) && (bulletPosTop<=barPosBottom) && (bulletPosLeft==win_width_calc)) {
+                console.log("Hit");
+                bullet.css({
+                    "left": spaceship.position().left + 50 + "px",
+                    "top": spaceship.position().top + 58 + "px",
+                })
+                score = score + 1;
+                document.getElementById("score").innerHTML = score;
             }
-        },100);
+            else if((bulletPosTop < barPos) && (bulletPosTop>=barPosBottom) && (bulletPosLeft > win_width_calc)) {
+                console.log("Miss");
+                clearInterval(checkAimInt);
+            }
+        },1);
         // if(bulletState.targ == "Hit") {
         //     score = score+1;
         //     document.getElementById("score").innerHTML = score;
