@@ -6,9 +6,12 @@ $(document).ready(function(){
     let win_calc = win_Ht - 70, win_width_calc = win_width-50;
     let bulletPosTop, bulletPosLeft, barPos, barPosBottom, barPosLeft;
     let score=0, checkAimInt;
+    let bgm = document.getElementById("bg-music");
+    let firem = document.getElementById("fire-music");
     spaceship.css({
         "position": "absolute",
-        "left": 10
+        "left": 10,
+        "top": 100
     });
     bullet.css({
         "display": "none",
@@ -30,7 +33,8 @@ $(document).ready(function(){
     bulletSpeed = 1;
     bulletState = {
         state: "available",
-        targ: "false"
+        targ: "false",
+        count: 6
     }    
 
     //When Key is Pressed
@@ -75,6 +79,7 @@ $(document).ready(function(){
 
     //Move function for Spaceship and Bullet
     function move() {
+        $("body").removeClass("active");
         if(direction.left){
             spaceship.css(
                 'left', (spaceship.position().left - speed) + "px"
@@ -95,7 +100,8 @@ $(document).ready(function(){
                 'top', (spaceship.position().top+speed) + "px"
             );
         }
-        if(bulletState.state=="fire") {
+        var soundFlag = true;
+        if((bulletState.state=="fire") && (bulletState.count >= 1)) {
             bulletState.state = "unavailable";
             bullet.css({
                 "display": "block",
@@ -107,7 +113,6 @@ $(document).ready(function(){
                 })
                 bulletState.state = "available";
             });
-            //checkAim();
             checkAimInt = setInterval(function(){
                 bulletPosTop = bullet.css("top").replace("px","");
                 bulletPosLeft = bullet.css("left").replace("px","");
@@ -128,9 +133,21 @@ $(document).ready(function(){
                 }
                 document.getElementById("score").innerHTML = score;
             },1);
+            bulletState.count--;
+            document.getElementById("count").innerHTML = bulletState.count;
+            firem.volume = 0.4;
+            if(soundFlag) {
+                firem.pause();
+                firem.currentTime = 0;
+                firem.play();
+                soundFlag = false;
+            }
         }
         if(bulletState.state == "available") {
             clearInterval(checkAimInt);
+        }
+        if(bulletState.count == 0) {
+            gameOver();
         }
     }
   
@@ -143,22 +160,64 @@ $(document).ready(function(){
             bar.animate({"top": 0},1000);
         }
     }
-
-    //Check Aim of the bullet
-    const checkAim = () => {
-        
-        // if(bulletState.targ == "Hit") {
-        //     score = score+1;
-        //     document.getElementById("score").innerHTML = score;
-        //     bulletState.targ = "false";
-        // }
-    }
-
    setInterval(obstacleMove,1000);
   
-   setInterval(function(){
-       move();
+   //Run move function
+   var moveInterval = setInterval(function(){
+    move();
    },10);
+   moveInterval;
 
+   //Game Over Function
+   var finalScore;
+   const gameOver = () => {
+    setTimeout(function(){
+        $("body").addClass("active");
+        finalScore = document.getElementById("score").innerText;
+        document.getElementById("final-score").innerHTML = finalScore;
+        clearInterval(moveInterval);
+    },2000);
+   }
+
+   //Game Restart Function
+   function game_restart() {
+    bulletState.count = 6;
+    score = 0;
+    document.getElementById("count").innerHTML = bulletState.count;
+    document.getElementById("score").innerText = 0;
+    spaceship.css({
+        "position": "absolute",
+        "left": 10,
+        "top": 100
+    });
+    moveInterval = setInterval(function(){
+    move();
+    },10);
+   }
+
+   $(".game-inner button").click(function(){
+    $("body").removeClass("active");
+    game_restart();
+   });
+
+   //Background Music 
+   bgm.volume = 0.1;
+   $(".onoffswitch").click(function(){
+    var $this = $(this);
+    $this.toggleClass('sound-active');
+    if($this.hasClass('sound-active')){ 
+        $this.text('Sound: On');
+        bgm.addEventListener('ended', function() {
+            bgm.currentTime = 0;
+            bgm.play();
+        }, false);  
+        bgm.play();      
+    }
+    else {
+        $this.text('Sound: Off');
+        bgm.pause();
+    }
+        
+    });
 
 });

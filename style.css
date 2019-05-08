@@ -1,5 +1,29 @@
+@import url('https://fonts.googleapis.com/css?family=Gugi');
+
 body {
     overflow: hidden;
+    margin: 0;
+    font-family: 'Gugi', cursive;
+    background-image: url('Images/space-bg.jpg');
+    background-size: cover;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+p.scoreboard {
+    padding: 10px 20px;
+    margin: 0;
+    font-size: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    background-color: #fff;
+    border: 1px solid #000;
+    display: inline-block;
+    position: relative;
+    z-index: 999;
+    vertical-align: middle;
 }
 
 #spaceship {
@@ -24,6 +48,11 @@ body {
     transform: rotate(90deg);
 }
 
+.active #spaceship {
+    left: 10px !important;
+    top: 100px !important;
+}
+
 #bullet {
     width: 60px;
     z-index: 9;
@@ -32,5 +61,92 @@ body {
 #bar {
     width: 10px;
     height: 70px;
+    background-color: #fff;
+    z-index: 10;
+}
+
+.active #bar {
+    top: 0 !important;
+}
+
+div#game-over {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.8);
+    top: 0;
+    left: 0;
+    z-index: 999999;
+    opacity:0;
+    visibility: hidden;
+    transition: all 100ms ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.active div#game-over {
+    opacity:1;
+    visibility: visible;
+}
+
+.game-inner {
+    width: 60%;
+    background-color: #fff;
+    padding: 15px;
+    text-align: center;
+    transform: scale(0.5);
+    transition: all 100ms ease;
+}
+
+.active .game-inner {
+    transform: scale(1);
+} 
+
+.game-inner h1 {
+    text-align: center;
+    font-size: 45px;
+    text-transform: uppercase;
+    letter-spacing: 8px;
+    margin: 0 0 15px;
+}
+
+.game-inner h3 {
+    text-align: center;
+    font-size: 35px;
+    margin: 0 0 15px;
+}
+
+.game-inner button {
+    display: inline-block;
+    padding: 15px 20px;
+    font-size: 18px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
     background-color: #000;
+    border: none;
+    color: #fff;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid #000;
+    transition: all 300ms ease;
+    outline: none;
+}
+
+.game-inner button:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+/*Sound ON OFF Button*/
+
+.onoffswitch {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    z-index: 99999;
+    padding: 5px;
+    background: #fff;
+    color: #000;
+    cursor: pointer;
 }
