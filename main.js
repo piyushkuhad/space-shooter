@@ -135,12 +135,17 @@ $(document).ready(function(){
             },1);
             bulletState.count--;
             document.getElementById("count").innerHTML = bulletState.count;
-            firem.volume = 0.4;
-            if(soundFlag) {
+            if($(".onoffswitch").hasClass('sound-active')){ 
+                firem.volume = 0.4;
+                if(soundFlag) {
+                    firem.pause();
+                    firem.currentTime = 0;
+                    firem.play();
+                    soundFlag = false;
+                }
+            }
+            else {
                 firem.pause();
-                firem.currentTime = 0;
-                firem.play();
-                soundFlag = false;
             }
         }
         if(bulletState.state == "available") {
